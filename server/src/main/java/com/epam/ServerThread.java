@@ -2,7 +2,6 @@ package com.epam;
 
 import org.apache.log4j.Logger;
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerThread extends Thread {
@@ -24,7 +23,9 @@ public class ServerThread extends Thread {
             while(true) {
                 line = in.readLine();
                 if (line.equals("#interrupted")) break;
-                sendMsg(line);
+                for (ServerThread st : Server.serverList) {
+                    st.sendMsg(line);
+                }
             }
         } catch (IOException err) {
             log.error(err);
@@ -33,10 +34,8 @@ public class ServerThread extends Thread {
 
     private void sendMsg(String line){
         try{
-            for(ServerThread st : Server.serverList){
-                out.write("nickname:" + line + '\n');
-                out.flush();
-            }
+            out.write("nickname:" + line + '\n');
+            out.flush();
         }
         catch(IOException err){
             log.error(err);
