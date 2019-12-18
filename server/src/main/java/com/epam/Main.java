@@ -18,29 +18,34 @@ public class Main {
     public static void main( String[] args ) {
         try {
             try {
-                log.info("Server start");
-                server = new ServerSocket(port);
-                clientSocket = server.accept();
-                try {
+                    log.info("Server start");
+                    server = new ServerSocket(port);
+                    clientSocket = server.accept();
                     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-
-                    String line = in.readLine();
-                    log.info(line);
-                    out.write("This line was sent: " + line);
-                    out.flush();
-                } finally {
-                    clientSocket.close();
-                    in.close();
-                    out.close();
+                    String line;
+                    try {
+                        while(true) {
+                            line = in.readLine();
+                            if (line.equals("#interrupted")) break;
+                            log.info(line);
+                            out.write("Line received: " + line + '\n');
+                            out.flush();
+                        }
+                    } catch (IOException err) {
+                        log.error(err);
+                    } finally {
+                        clientSocket.close();
+                        in.close();
+                        out.close();
+                    }
                 }
-            } finally {
-                log.info("Server closed");
-                server.close();
+                finally{
+                    log.info("Server closed");
+                    server.close();
+                }
+            } catch (IOException e) {
+                log.error(e);
             }
-        }
-        catch (IOException e){
-            log.error(e);
-        }
     }
 }
