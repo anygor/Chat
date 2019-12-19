@@ -7,12 +7,12 @@ import org.apache.log4j.Logger;
 
 public class Client {
 
-    static Socket socket;
-    static BufferedReader reader;
-    static BufferedReader in;
-    static BufferedWriter out;
-    static String host;
-    static int port;
+    Socket socket;
+    BufferedReader reader;
+    BufferedReader in;
+    BufferedWriter out;
+    String host;
+    int port;
 
     private static final Logger log = Logger.getLogger(Client.class);
 
@@ -32,7 +32,50 @@ public class Client {
         }
     }
 
-    static void abort(){
+    private class Reader extends Thread{
+        public void run(){
+            String line;
+            try {
+                while (true) {
+                    log.info(">");
+                    line = in.readLine();
+                    if (line.equals("/quit")) {
+                        abort();
+                        break;
+                    }
+                    log.info(line);
+                }
+            }
+            catch (IOException err){
+                log.error(err);
+            }
+        }
+    }
+
+    private class Writer extends Thread{
+        public void run(){
+            String line;
+            try {
+                while (true) {
+                    line = reader.readLine();
+                    if (line.equals("/quit")) {
+                        out.write("#interrupted" + '\n');
+                        out.flush();
+                        abort();
+                        break;
+                    } else {
+                        out.write(line + '\n');
+                    }
+                    out.flush();
+                }
+            }
+            catch (IOException err){
+                log.error(err);
+            }
+        }
+    }
+
+    void abort(){
         try{
             socket.close();
             in.close();

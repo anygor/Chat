@@ -5,9 +5,9 @@ import java.io.*;
 import java.net.Socket;
 
 public class ServerThread extends Thread {
-    private static Socket socket;
-    private static BufferedReader in;
-    private static BufferedWriter out;
+    private Socket socket;
+    private BufferedReader in;
+    private BufferedWriter out;
     private static final Logger log = Logger.getLogger(ServerThread.class);
 
     public ServerThread(Socket _socket) throws IOException {
@@ -50,7 +50,7 @@ public class ServerThread extends Thread {
 
     private void sendMsg(String line){
         try{
-            out.write("nickname:" + line + '\n');
+            out.write("usernameLine: " + line + '\n');
             out.flush();
         }
         catch(IOException err){
