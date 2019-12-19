@@ -1,5 +1,6 @@
 package com.epam;
 
+import com.sun.corba.se.impl.activation.ServerTableEntry;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -12,6 +13,8 @@ public class Writer extends Thread {
             while (true) {
                 line = Client.reader.readLine();
                 if (line.equals("/quit")) {
+                    Client.out.write("#interrupted" + '\n');
+                    Client.out.flush();
                     Client.abort();
                     break;
                 } else {

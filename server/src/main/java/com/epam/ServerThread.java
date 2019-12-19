@@ -22,12 +22,28 @@ public class ServerThread extends Thread {
         try {
             while(true) {
                 line = in.readLine();
-                if (line.equals("#interrupted")) break;
-                for (ServerThread st : Server.serverList) {
+                if (line.equals("#interrupted")) {
+                    this.abort();
+                    break;
+                }
+                for (ServerThread st:Server.serverList) {
                     st.sendMsg(line);
                 }
             }
         } catch (IOException err) {
+            this.abort();
+        }
+    }
+
+    void abort(){
+        try{
+            Server.serverList.remove(this);
+            socket.close();
+            in.close();
+            out.close();
+            log.info("Thread aborted");
+        }
+        catch(IOException err){
             log.error(err);
         }
     }

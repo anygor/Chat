@@ -13,18 +13,22 @@ public class Server {
     private static final int port = 4470;
     static LinkedList<ServerThread> serverList = new LinkedList<>();
 
-    public static void initiate(){
+    public static void initiate() {
         log.info("Server initiated");
-        try{
-            ServerSocket server = new ServerSocket(port);
-            while(true){
+        ServerSocket server;
+        try {
+            server = new ServerSocket(port);
+            while (true) {
                 Socket socket = server.accept();
-                serverList.add(new ServerThread(socket));
+                try {
+                    serverList.add(new ServerThread(socket));
+                } catch (IOException err) {
+                    socket.close();
+                }
             }
         }
-        catch(IOException err){
+        catch (IOException err) {
             log.error(err);
         }
     }
-
 }
