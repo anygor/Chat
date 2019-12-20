@@ -15,6 +15,7 @@ public class ServerThread extends Thread {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter((new OutputStreamWriter(socket.getOutputStream())));
         log.info("Server Thread initiated");
+
         Server.history.sendHistory(out);
         start();
     }
@@ -43,6 +44,8 @@ public class ServerThread extends Thread {
             socket.close();
             in.close();
             out.close();
+            if(Server.serverList.isEmpty())
+                Server.server.setSoTimeout(10000);
             log.info("Thread aborted");
         }
         catch(IOException err){

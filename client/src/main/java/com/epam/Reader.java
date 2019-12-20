@@ -17,14 +17,11 @@ public class Reader extends Thread{
         String line;
         try {
             while (true) {
-                log.info(">");
                 line = reader.readLine();
                 log.info(line);
             }
         }
-        catch (IOException err){
-            // ("Reader aborts")
-        }
+        catch (IOException err){}
         finally {
             try {
                 reader.close();

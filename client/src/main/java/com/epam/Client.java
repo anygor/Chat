@@ -2,6 +2,7 @@ package com.epam;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -50,9 +51,20 @@ public class Client {
     }
 
     public static void launch(){
-        String host = "localhost";
-        int port = 4470;
-        new Client(host, port);
+        try {
+            FileInputStream fileInputStream = new FileInputStream("src/main/resources/config.properties");
+            Properties property = new Properties();
+            property.load(fileInputStream);
+            String host = property.getProperty("db.host");
+            int port = Integer.parseInt(property.getProperty("db.port"));
+            new Client(host, port);
+        }
+        catch(FileNotFoundException err){
+            log.error("config.properties not found");
+        }
+        catch(IOException err) {
+            log.error(err);
+        }
     }
 
 }

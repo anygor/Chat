@@ -21,7 +21,6 @@ public class Writer extends Thread {
         String line;
         try {
             while (true) {
-                // log.info(">");
                 line = reader.readLine();
                 if (line.equals("/quit")) {
                     writer.write("'" + nickname + "'" + " has left the chat" + '\n');
@@ -36,7 +35,6 @@ public class Writer extends Thread {
                     writer.flush();
                 }
             }
-        } catch (IOException err) {
-        }
+        } catch (IOException err) {}
     }
 }
