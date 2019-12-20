@@ -13,12 +13,10 @@ public class Server {
     private static final int port = 4470;
     public static History history;
     static LinkedList<ServerThread> serverList = new LinkedList<>();
-    public static History history;
 
     public static void initiate() {
         log.info("Server initiated");
         ServerSocket server;
-        //history = new History();
         try {
             server = new ServerSocket(port);
             history = new History();
