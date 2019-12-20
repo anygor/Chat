@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 public class Client {
 
     Socket socket;
+    Reader reader1;
+    Writer writer;
     BufferedReader reader;
     BufferedReader in;
     BufferedWriter out;
@@ -24,58 +26,17 @@ public class Client {
             reader = new BufferedReader(new InputStreamReader(System.in));
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            new Reader().start();
-            new Writer().start();
+            reader1 = new Reader(in);
+            writer = new Writer(reader, out);
+            reader1.start();
+            writer.start();
         }
         catch (IOException err){
             log.error(err);
         }
     }
 
-    private class Reader extends Thread{
-        public void run(){
-            String line;
-            try {
-                while (true) {
-                    log.info(">");
-                    line = in.readLine();
-                    if (line.equals("/quit")) {
-                        abort();
-                        break;
-                    }
-                    log.info(line);
-                }
-            }
-            catch (IOException err){
-                log.error(err);
-            }
-        }
-    }
-
-    private class Writer extends Thread{
-        public void run(){
-            String line;
-            try {
-                while (true) {
-                    line = reader.readLine();
-                    if (line.equals("/quit")) {
-                        out.write("#interrupted" + '\n');
-                        out.flush();
-                        abort();
-                        break;
-                    } else {
-                        out.write(line + '\n');
-                    }
-                    out.flush();
-                }
-            }
-            catch (IOException err){
-                log.error(err);
-            }
-        }
-    }
-
-    void abort(){
+    public void abort(){
         try{
             socket.close();
             in.close();
