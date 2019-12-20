@@ -15,6 +15,7 @@ public class ServerThread extends Thread {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter((new OutputStreamWriter(socket.getOutputStream())));
         log.info("Server Thread initiated");
+        //Server.history.sendHistory(out);
         start();
     }
     public void run() {
@@ -26,6 +27,7 @@ public class ServerThread extends Thread {
                     this.abort();
                     break;
                 }
+                //Server.history.addToHistory(line);
                 for (ServerThread st:Server.serverList) {
                     st.sendMsg(line);
                 }
@@ -50,7 +52,7 @@ public class ServerThread extends Thread {
 
     private void sendMsg(String line){
         try{
-            out.write("usernameLine: " + line + '\n');
+            out.write(line + '\n');
             out.flush();
         }
         catch(IOException err){
