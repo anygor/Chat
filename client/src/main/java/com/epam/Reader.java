@@ -17,6 +17,7 @@ public class Reader extends Thread{
         String line;
         try {
             while (true) {
+                log.info(">");
                 line = reader.readLine();
                 log.info(line);
             }

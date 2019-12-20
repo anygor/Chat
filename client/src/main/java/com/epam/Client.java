@@ -16,6 +16,8 @@ public class Client {
     String host;
     int port;
 
+    String nickname;
+
     private static final Logger log = Logger.getLogger(Client.class);
 
     public Client(String _host, int _port){
@@ -26,8 +28,9 @@ public class Client {
             reader = new BufferedReader(new InputStreamReader(System.in));
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            setNickname();
             reader1 = new Reader(in);
-            writer = new Writer(reader, out);
+            writer = new Writer(reader, out, nickname);
             reader1.start();
             writer.start();
         }
@@ -36,15 +39,14 @@ public class Client {
         }
     }
 
-    public void abort(){
-        try{
-            socket.close();
-            in.close();
-            out.close();
+    private void setNickname(){
+        try {
+            log.info("login >");
+            nickname = reader.readLine();
+            out.write("'" + nickname + "'" + " has joined the chat" + '\n');
+            out.flush();
         }
-        catch(IOException err){
-            log.error(err);
-        }
+        catch (IOException err) {}
     }
 
     public static void launch(){

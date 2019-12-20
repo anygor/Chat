@@ -10,25 +10,29 @@ public class Writer extends Thread {
     private static final Logger log = Logger.getLogger(Writer.class);
     private BufferedReader reader;
     private BufferedWriter writer;
+    private String nickname;
 
-    public Writer(BufferedReader _reader, BufferedWriter _writer){
+    public Writer(BufferedReader _reader, BufferedWriter _writer, String _nickname){
             reader = _reader;
             writer = _writer;
+            nickname = _nickname;
     }
     public void run() {
         String line;
         try {
             while (true) {
-                log.info(">");
+                // log.info(">");
                 line = reader.readLine();
                 if (line.equals("/quit")) {
+                    writer.write("'" + nickname + "'" + " has left the chat" + '\n');
+                    writer.flush();
                     writer.write("#interrupted" + '\n');
                     writer.flush();
                     writer.close();
                     reader.close();
                     break;
                 } else {
-                    writer.write(line + '\n');
+                    writer.write(nickname + ": " + line + '\n');
                     writer.flush();
                 }
             }
