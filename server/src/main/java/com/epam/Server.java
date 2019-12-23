@@ -27,7 +27,7 @@ public class Server {
             history = new History();
             do {
                 try {
-                    server.setSoTimeout(10000);
+                    server.setSoTimeout(Integer.parseInt(property.getProperty("db.timeout")));
                     Socket socket = server.accept();
                     serverList.add(new ServerThread(socket));
                 }

@@ -30,7 +30,7 @@ public class Client {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             setNickname();
-            readerStream = new Reader(in);
+            readerStream = new Reader(in, nickname);
             writer = new Writer(reader4Writer, out, nickname);
             readerStream.start();
             writer.start();
