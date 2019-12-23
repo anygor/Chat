@@ -8,11 +8,12 @@ import org.apache.log4j.Logger;
 public class History {
     private static final Logger logFile = Logger.getLogger("HistoryFile");
     private static Queue<String> history;
+    private static BufferedReader in;
     private static BufferedWriter out;
     public History(){
         history = new LinkedList<>();
+        fileHistoryInput();
         try {
-            //out = new PrintWriter(new FileOutputStream("src/main/resources/historyText.txt"));
             out = new BufferedWriter(new PrintWriter(new FileOutputStream("src/main/resources/historyText.txt", false)));
         }
         catch(FileNotFoundException e) {}
@@ -39,13 +40,24 @@ public class History {
             catch(IOException err){}
         }
     }
-    public static void fileHistory(){
+    public static void fileHistoryOutput(){
         try {
             while (!history.isEmpty()) {
                 out.write(history.poll());
                 out.flush();
             }
         }
+        catch(IOException e){}
+    }
+    public static void fileHistoryInput(){
+        try {
+            in = new BufferedReader(new FileReader("src/main/resources/historyText.txt"));
+            String buffer;
+            while ((buffer = in.readLine()) != null) {
+                history.add(buffer+'\n');
+            }
+        }
+        catch(FileNotFoundException e){}
         catch(IOException e){}
     }
 }

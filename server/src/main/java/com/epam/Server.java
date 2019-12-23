@@ -38,7 +38,7 @@ public class Server {
                 catch(SocketTimeoutException e){
                     if(serverList.isEmpty()){
                         log.info("Empty server timeout exception");
-                        History.fileHistory();
+                        History.fileHistoryOutput();
                         server.close();
                         break;
                     }
