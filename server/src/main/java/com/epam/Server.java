@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.LinkedList;
 import java.util.Properties;
-import java.util.concurrent.TimeoutException;
 
 
 public class Server {
@@ -27,16 +26,24 @@ public class Server {
             server = new ServerSocket(port);
             history = new History();
             do {
-                Socket socket = server.accept();
                 try {
-                    serverList.add(new ServerThread(socket));
-                } catch (IOException err) {
-                    socket.close();
+                    server.setSoTimeout(10000);
+                    Socket socket = server.accept();
+                    try {
+                        serverList.add(new ServerThread(socket));
+                    } catch (IOException err) {
+                        socket.close();
+                    }
+                }
+                catch(SocketTimeoutException e){
+                    if(serverList.isEmpty()){
+                        log.info("Empty server timeout exception");
+                        History.fileHistory();
+                        server.close();
+                        break;
+                    }
                 }
             }while(true);
-        }
-        catch(SocketTimeoutException e){
-            log.info("Timeout");
         }
         catch(FileNotFoundException err) {
             log.error("config.properties file not found");

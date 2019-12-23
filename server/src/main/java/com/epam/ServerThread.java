@@ -44,8 +44,6 @@ public class ServerThread extends Thread {
             socket.close();
             in.close();
             out.close();
-            if(Server.serverList.isEmpty())
-                Server.server.setSoTimeout(10000);
             log.info("Thread aborted");
         }
         catch(IOException err){

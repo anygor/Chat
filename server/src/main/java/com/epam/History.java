@@ -1,7 +1,6 @@
 package com.epam;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.apache.log4j.Logger;
@@ -9,8 +8,15 @@ import org.apache.log4j.Logger;
 public class History {
     private static final Logger logFile = Logger.getLogger("HistoryFile");
     private static Queue<String> history;
+    private static BufferedWriter out;
     public History(){
         history = new LinkedList<>();
+        try {
+            //out = new PrintWriter(new FileOutputStream("src/main/resources/historyText.txt"));
+            out = new BufferedWriter(new PrintWriter(new FileOutputStream("src/main/resources/historyText.txt", false)));
+        }
+        catch(FileNotFoundException e) {}
+
     }
 
     public void addToHistory(String msg) {
@@ -32,5 +38,14 @@ public class History {
             }
             catch(IOException err){}
         }
+    }
+    public static void fileHistory(){
+        try {
+            while (!history.isEmpty()) {
+                out.write(history.poll());
+                out.flush();
+            }
+        }
+        catch(IOException e){}
     }
 }
