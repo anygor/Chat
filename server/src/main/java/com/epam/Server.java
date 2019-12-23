@@ -29,11 +29,7 @@ public class Server {
                 try {
                     server.setSoTimeout(10000);
                     Socket socket = server.accept();
-                    try {
-                        serverList.add(new ServerThread(socket));
-                    } catch (IOException err) {
-                        socket.close();
-                    }
+                    serverList.add(new ServerThread(socket));
                 }
                 catch(SocketTimeoutException e){
                     if(serverList.isEmpty()){

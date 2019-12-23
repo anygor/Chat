@@ -10,10 +10,13 @@ public class ServerThread extends Thread {
     private BufferedWriter out;
     private static final Logger log = Logger.getLogger(ServerThread.class);
 
-    public ServerThread(Socket _socket) throws IOException {
+    public ServerThread(Socket _socket){
         socket = _socket;
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new BufferedWriter((new OutputStreamWriter(socket.getOutputStream())));
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new BufferedWriter((new OutputStreamWriter(socket.getOutputStream())));
+        }
+        catch(IOException e){}
         log.info("Server Thread initiated");
 
         Server.history.sendHistory(out);

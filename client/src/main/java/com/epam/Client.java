@@ -9,9 +9,9 @@ import org.apache.log4j.Logger;
 public class Client {
 
     Socket socket;
-    Reader reader1;
+    Reader readerStream;
     Writer writer;
-    BufferedReader reader;
+    BufferedReader reader4Writer;
     BufferedReader in;
     BufferedWriter out;
     String host;
@@ -26,13 +26,13 @@ public class Client {
         port = _port;
         try{
             socket = new Socket(host, port);
-            reader = new BufferedReader(new InputStreamReader(System.in));
+            reader4Writer = new BufferedReader(new InputStreamReader(System.in));
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             setNickname();
-            reader1 = new Reader(in);
-            writer = new Writer(reader, out, nickname);
-            reader1.start();
+            readerStream = new Reader(in);
+            writer = new Writer(reader4Writer, out, nickname);
+            readerStream.start();
             writer.start();
         }
         catch (IOException err){
@@ -43,7 +43,7 @@ public class Client {
     private void setNickname(){
         try {
             log.info("login >");
-            nickname = reader.readLine();
+            nickname = reader4Writer.readLine();
             out.write("'" + nickname + "'" + " has joined the chat" + '\n');
             out.flush();
         }
