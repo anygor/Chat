@@ -6,6 +6,7 @@ import java.util.Queue;
 import org.apache.log4j.Logger;
 
 public class History {
+    private static final Logger log = Logger.getLogger(History.class);
     private static final Logger logFile = Logger.getLogger("HistoryFile");
     private static Queue<String> history;
     private static BufferedReader in;
@@ -16,7 +17,9 @@ public class History {
         try {
             out = new BufferedWriter(new PrintWriter(new FileOutputStream("src/main/resources/historyText.txt", false)));
         }
-        catch(FileNotFoundException e) {}
+        catch(FileNotFoundException e) {
+            log.error(e);
+        }
 
     }
 
@@ -37,7 +40,9 @@ public class History {
                 out.write("..."+'\n');
                 out.flush();
             }
-            catch(IOException err){}
+            catch(IOException err){
+                log.error(err);
+            }
         }
     }
     public static void fileHistoryOutput(){
@@ -47,7 +52,9 @@ public class History {
                 out.flush();
             }
         }
-        catch(IOException e){}
+        catch(IOException e){
+            log.error(e);
+        }
     }
     public static void fileHistoryInput(){
         try {
@@ -57,7 +64,11 @@ public class History {
                 history.add(buffer+'\n');
             }
         }
-        catch(FileNotFoundException e){}
-        catch(IOException e){}
+        catch(FileNotFoundException e){
+            log.error(e);
+        }
+        catch(IOException e){
+            log.error(e);
+        }
     }
 }

@@ -7,11 +7,9 @@ import java.io.IOException;
 
 public class Reader extends Thread{
     private BufferedReader reader;
-    private String nickname;
 
-    public Reader(BufferedReader br, String _nickname){
+    public Reader(BufferedReader br){
         reader = br;
-        nickname = _nickname;
     }
 
     private static final Logger log = Logger.getLogger(Reader.class);
@@ -24,14 +22,14 @@ public class Reader extends Thread{
 
             }
         }
-        catch (IOException err){
-            log.info("'" + nickname + "'" + " has left the chat" + '\n');
-        }
+        catch (IOException err){}
         finally {
             try {
                 reader.close();
             }
-            catch(IOException err) {}
+            catch(IOException err) {
+                log.error(err);
+            }
         }
     }
 }

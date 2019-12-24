@@ -16,7 +16,9 @@ public class ServerThread extends Thread {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter((new OutputStreamWriter(socket.getOutputStream())));
         }
-        catch(IOException e){}
+        catch(IOException e){
+            log.error(e);
+        }
         log.info("Server Thread initiated");
 
         Server.history.sendHistory(out);

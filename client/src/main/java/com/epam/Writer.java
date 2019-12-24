@@ -35,6 +35,8 @@ public class Writer extends Thread {
                     writer.flush();
                 }
             }
-        } catch (IOException err) {}
+        } catch (IOException err) {
+            log.error(err);
+        }
     }
 }
