@@ -43,7 +43,7 @@ public class ServerThread extends Thread {
         }
     }
 
-    void abort(){
+    private void abort(){
         try{
             Server.serverList.remove(this);
             socket.close();
