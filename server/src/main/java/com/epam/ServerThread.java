@@ -4,7 +4,16 @@ import org.apache.log4j.Logger;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * ServerThread is created to support connection to particular client
+ * @author Andrei_Gordeev
+ * @version 1.0
+ */
+
 public class ServerThread extends Thread {
+    /**
+     * socket for getting io streams
+     */
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;

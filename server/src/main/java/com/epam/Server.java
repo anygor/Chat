@@ -7,15 +7,25 @@ import java.net.*;
 import java.util.LinkedList;
 import java.util.Properties;
 
-
+/**
+ * Global connection center for clients of the chat
+ * @author Andrei_Gordeev
+ * @version 1.0
+ */
 public class Server {
+    /**
+     * logger for logging
+     * history for saving messages after server abortion/restart
+     * serverList - a list of threads for each client
+     * timeout - amount of time in for the server to shut down if empty
+     *
+     */
     private static final Logger log = Logger.getLogger(Server.class);
     public static History history;
     static LinkedList<ServerThread> serverList;
     private ServerSocket server;
     private int port;
     private int timeout;
-    private ServerThread serverThread;
 
     public Server(){
         try {
@@ -40,7 +50,7 @@ public class Server {
                 try {
                     server.setSoTimeout(timeout);
                     Socket socket = server.accept();
-                    serverThread = new ServerThread(socket);
+                    ServerThread serverThread = new ServerThread(socket);
                     serverList.add(serverThread);
                     serverThread.start();
                 } catch (SocketTimeoutException e) {

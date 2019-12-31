@@ -5,7 +5,19 @@ import java.util.LinkedList;
 import java.util.Queue;
 import org.apache.log4j.Logger;
 
+/**
+ * separate class for writing down history
+ * and sending it to all new and current clients.
+ * The key figure - queue of strings that contains 5 last messages
+ * @author Andrei_Gordeev
+ * @version 1.0
+ */
+
 public class History {
+    /**
+     * logFile will record the whole history into the file
+     * queue of strings is the last messages received from the client
+     */
     private static final Logger log = Logger.getLogger(History.class);
     private static final Logger logFile = Logger.getLogger("HistoryFile");
     private static Queue<String> history;

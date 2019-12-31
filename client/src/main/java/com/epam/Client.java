@@ -6,6 +6,13 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+/**
+ * In this program client is actually not an object but a set of tools to
+ * communicate with the server at certain address and port
+ * @author Andrei_Gordeev
+ * @version 1.0
+ */
+
 public class Client {
 
     Socket socket;

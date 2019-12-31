@@ -5,6 +5,11 @@ import org.apache.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+/**
+ * This thing is in charge of getting messages from the server
+ * @author Andrei_Gordeev
+ */
+
 public class Reader extends Thread{
     private BufferedReader reader;
 
