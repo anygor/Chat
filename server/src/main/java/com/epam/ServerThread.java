@@ -22,7 +22,6 @@ public class ServerThread extends Thread {
         log.info("Server Thread initiated");
 
         Server.history.sendHistory(out);
-        start();
     }
     public void run() {
         String line;

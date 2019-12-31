@@ -15,10 +15,11 @@ public class Server {
     private ServerSocket server;
     private int port;
     private int timeout;
+    private ServerThread serverThread;
 
     public Server(){
         try {
-            FileInputStream fileInputStream = new FileInputStream("src/main/resources/config.properties");
+            FileInputStream fileInputStream = new FileInputStream("server/src/main/resources/config.properties");
             Properties property = new Properties();
             property.load(fileInputStream);
             serverList = new LinkedList<>();
@@ -39,7 +40,9 @@ public class Server {
                 try {
                     server.setSoTimeout(timeout);
                     Socket socket = server.accept();
-                    serverList.add(new ServerThread(socket));
+                    serverThread = new ServerThread(socket);
+                    serverList.add(serverThread);
+                    serverThread.start();
                 } catch (SocketTimeoutException e) {
                     if (serverList.isEmpty()) {
                         log.info("Empty server timeout exception");

@@ -15,7 +15,7 @@ public class History {
         history = new LinkedList<>();
         fileHistoryInput();
         try {
-            out = new BufferedWriter(new PrintWriter(new FileOutputStream("src/main/resources/historyText.txt", false)));
+            out = new BufferedWriter(new PrintWriter(new FileOutputStream("server/src/main/resources/historyText.txt", false)));
         }
         catch(FileNotFoundException e) {
             log.error(e);
@@ -26,7 +26,7 @@ public class History {
     public void addToHistory(String msg) {
          if (history.size() >= 5) {
              history.remove();
-         }
+    }
          history.add(msg);
          logFile.info(msg);
     }
@@ -58,7 +58,7 @@ public class History {
     }
     public static void fileHistoryInput(){
         try {
-            in = new BufferedReader(new FileReader("src/main/resources/historyText.txt"));
+            in = new BufferedReader(new FileReader("server/src/main/resources/historyText.txt"));
             String buffer;
             while ((buffer = in.readLine()) != null) {
                 history.add(buffer+'\n');

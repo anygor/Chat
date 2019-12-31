@@ -32,12 +32,15 @@ public class Client {
             setNickname();
             readerStream = new Reader(in);
             writer = new Writer(reader4Writer, out, nickname);
-            readerStream.start();
-            writer.start();
         }
         catch (IOException err){
             log.error(err);
         }
+    }
+
+    private static void startStream(Reader reader, Writer writer){
+        reader.start();
+        writer.start();
     }
 
     private void setNickname(){
@@ -54,12 +57,13 @@ public class Client {
 
     public static void launch(){
         try {
-            FileInputStream fileInputStream = new FileInputStream("src/main/resources/config.properties");
+            FileInputStream fileInputStream = new FileInputStream("client/src/main/resources/config.properties");
             Properties property = new Properties();
             property.load(fileInputStream);
             String host = property.getProperty("db.host");
             int port = Integer.parseInt(property.getProperty("db.port"));
-            new Client(host, port);
+            Client client = new Client(host, port);
+            startStream(client.readerStream, client.writer);
         }
         catch(FileNotFoundException err){
             log.error("config.properties not found");
